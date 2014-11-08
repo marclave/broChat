@@ -1,6 +1,7 @@
 package broChat;
 
-import static broChat.Port.port;
+import static broChat.Constants.PORT;
+import static broChat.Constants.HOST;
 import java.io.*;
 import java.net.*;
 
@@ -8,18 +9,15 @@ public class Server
 {
 	public static void main(String[] args) throws IOException
 	{
-		
 		try
 		{
-			ServerSocket server = new ServerSocket(port); // Set the port number
-			System.out.println("Starting chat application..."); // TODO: gui output
+			Socket server = new Socket(HOST, PORT); // Set the port number
+			System.out.println("Starting chat application...");
 			
-			while(true)
-			{
-				Socket socket = server.accept(); // Accept the socket trying to connect
-				System.out.println("Starting chat with " + socket.getLocalAddress()); // TODO see if more information is available
-				// TODO Now create instance of client class and a new thread then start the chat
-			}
+			Client client = new Client(server); // Start new client instance
+			
+			Thread thread = new Thread(client); // Initiate new thread
+			thread.start(); // Start the new thread
 		}
 		catch (Exception e)
 		{
